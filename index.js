@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 
 var handlebars = require('express-handlebars');
+var fortune = require('./lib/fortune.js');
 
 app.engine('handlebars', handlebars({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -16,7 +17,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/about', function(req, res){
-    res.render('about');
+    res.render('about', {fortune: fortune.getFortune()});
 });
 
 //404 catch-all handler (middleware) 
