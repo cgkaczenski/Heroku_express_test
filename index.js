@@ -1,31 +1,33 @@
 var express = require('express');
-
 var app = express();
+
+var handlebars = require('express-handlebars');
+
+app.engine('handlebars', handlebars({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
 
 app.set('port', (process.env.PORT || 8080));
 
 app.get('/', function(req, res){
-    res.type('text/plain');
-    res.send('Meadowlark Travel');
+    res.render('home');
 });
 
 app.get('/about', function(req, res){
-    res.type('text/plain');
-    res.send('About Meadowlark Travel');
+    res.render('about');
 });
 
-
+//404 catch-all handler (middleware) 
 app.use(function(req,res) {
-    res.type('text/plain');
     res.status(404);
-    res.send('404 - Not Found');
+    res.render('404');
 });
 
+//500 error handler (middleware)
 app.use(function(req,res) {
     console.error(err.stack);
-    res.type('text/plain');
     res.status(500);
-    res.send('500 - server error');
+    res.render('500');
 });
 
 app.listen(app.get('port'), function () {
